@@ -42,15 +42,15 @@ backgroundMusic.volume = 0.03;
 
 // Load Star Sounds and Set Volume
 const starAudios = [
-    { audio: document.getElementById('tipuanukuAudio'), name: 'Tipuanuku', src: 'Tupuānuku.png', volume: 0.8 },
-    { audio: document.getElementById('hiwaiterangiAudio'), name: 'Hiwaiterangi', src: 'Hiwa-i-te-rangi.png', volume: 0.8 },
+    { audio: document.getElementById('tipuanukuAudio'), name: 'Tupuānuku', src: 'Tipuanuku.png', volume: 0.8 },
+    { audio: document.getElementById('hiwaiterangiAudio'), name: 'Hiwa-i-te-rangi', src: 'Hiwaiterangi.png', volume: 0.8 },
     { audio: document.getElementById('matarikiAudio'), name: 'Matariki', src: 'Matariki.png', volume: 0.8 },
-    { audio: document.getElementById('pohutukawaAudio'), name: 'Pohutukawa', src: 'Pōhutukawa.png', volume: 0.8 },
-    { audio: document.getElementById('tipuarangiAudio'), name: 'Tipuarangi', src: 'Tupuārangi.png', volume: 0.8 },
+    { audio: document.getElementById('pohutukawaAudio'), name: 'Pōhutukawa', src: 'Pohutukawa.png', volume: 0.8 },
+    { audio: document.getElementById('tipuarangiAudio'), name: 'Tupuārangi', src: 'Tupuarangi.png', volume: 0.8 },
     { audio: document.getElementById('ururangiAudio'), name: 'Ururangi', src: 'Ururangi.png', volume: 0.8 },
     { audio: document.getElementById('waipunarangiAudio'), name: 'Waipunarangi', src: 'Waipunarangi.png', volume: 0.8 },
-    { audio: document.getElementById('waitaAudio'), name: 'Waita', src: 'Waitā.png', volume: 0.8 },
-    { audio: document.getElementById('waitiAudio'), name: 'Waiti', src: 'Waitī.png', volume: 0.8 }
+    { audio: document.getElementById('waitaAudio'), name: 'Waitā', src: 'Waita.png', volume: 0.8 },
+    { audio: document.getElementById('waitiAudio'), name: 'Waitī', src: 'Waiti.png', volume: 0.8 }
 ];
 
 // Set volumes for star audios
