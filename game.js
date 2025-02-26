@@ -89,28 +89,38 @@ class Particle {
     }
 }
 
+// Function for triggering bird jump (space and touch)
+function flapAction() {
+    if (!gameActive) {
+        backgroundMusic.play(); // Play the background music on the first interaction
+    }
+    if (gameActive) {
+        birdSpeed = -4; // Adjust this value for bird's upward movement
+    } else {
+        gameActive = true;
+        score = 0;
+        stars = [];
+        obstacles = [];
+        particles = [];
+        birdY = canvas.height / 2;
+        birdSpeed = 0;
+        starSpeed = 2;
+        obstacleSpeed = 2;
+        currentStarName = ''; // Reset the star name
+    }
+    console.log("Jump triggered, gameActive:", gameActive);
+}
+
 // Event Listener for Space Key
 document.addEventListener('keydown', function(event) {
     if (event.code === 'Space') {
-        if (!gameActive) {
-            backgroundMusic.play(); // Play the background music on the first interaction
-        }
-        if (gameActive) {
-            birdSpeed = -4; // Adjust this value for bird's upward movement
-        } else {
-            gameActive = true;
-            score = 0;
-            stars = [];
-            obstacles = [];
-            particles = [];
-            birdY = canvas.height / 2;
-            birdSpeed = 0;
-            starSpeed = 2;
-            obstacleSpeed = 2;
-            currentStarName = ''; // Reset the star name
-        }
-        console.log("Space pressed, gameActive:", gameActive);
+        flapAction();
     }
+});
+
+// Event Listener for Touch (for iPad and mobile)
+document.addEventListener('touchstart', function() {
+    flapAction();
 });
 
 // Foreground animation variables
@@ -153,107 +163,10 @@ function gameLoop(timestamp) {
     let birdHeight = 50; // Adjust the height for scaling
     ctx.drawImage(birdImg, 50, birdY, birdWidth, birdHeight);
 
-    // Update and Draw Particles
-    particles = particles.filter(particle => particle.size > 0);
-    particles.forEach(particle => {
-        particle.update();
-        particle.draw();
-    });
-
     // Bird Physics
     if (gameActive) {
         birdSpeed += gravity;
         birdY += birdSpeed;
-        console.log("Bird position:", birdY);
-
-        // Add Stars and Obstacles
-        if (Math.random() < 0.02) {
-            const star = starAudios[Math.floor(Math.random() * starAudios.length)];
-            const starImg = new Image();
-            starImg.src = star.src;
-            starImg.onload = () => {
-                stars.push({ x: canvas.width, y: Math.random() * canvas.height, image: starImg, audio: star.audio, name: star.name });
-            };
-        }
-        if (Math.random() < 0.01) {
-            const obstacleImg = new Image();
-            obstacleImg.src = 'glowing_ball.png';
-            obstacleImg.onload = () => {
-                obstacles.push({ x: canvas.width, y: Math.random() * canvas.height, image: obstacleImg });
-            };
-        }
-        console.log("Stars count:", stars.length, "Obstacles count:", obstacles.length);
-
-        // Move Stars
-        stars = stars.filter(star => {
-            star.x -= starSpeed;
-            ctx.drawImage(star.image, star.x, star.y, 20, 20);
-            return star.x > -20;
-        });
-
-        // Move Obstacles
-        obstacles = obstacles.filter(obstacle => {
-            obstacle.x -= obstacleSpeed;
-            ctx.drawImage(obstacle.image, obstacle.x, obstacle.y, 30, 30);
-            return obstacle.x > -30;
-        });
-
-        // Check Collisions
-        stars.forEach(star => {
-            if (Math.abs(star.x - 50) < 20 && Math.abs(star.y - birdY) < 20) {
-                // Add particles on collision
-                for (let i = 0; i < 10; i++) {
-                    particles.push(new Particle(star.x, star.y));
-                }
-
-                if (star.name === 'Matariki') {
-                    score += 2; // Increase score by 2 for Matariki star
-                } else {
-                    score += 1;
-                }
-                star.audio.play();
-                star.x = -20; // Remove star
-                currentStarName = star.name;  // Update the current star name
-                console.log("Star collected:", star.name, "Score:", score);
-                if (score % 10 === 0) {
-                    starSpeed += 0.5;
-                    obstacleSpeed += 0.5;
-                    console.log("Speed increased: starSpeed =", starSpeed, "obstacleSpeed =", obstacleSpeed);
-                }
-            }
-        });
-
-        obstacles.forEach(obstacle => {
-            if (Math.abs(obstacle.x - 50) < 20 && Math.abs(obstacle.y - birdY) < 20) {
-                gameActive = false; // End game
-                console.log("Game over - hit obstacle");
-            }
-        });
-
-        // Check Boundaries
-        if (birdY > canvas.height || birdY < 0) {
-            gameActive = false; // End game
-            console.log("Game over - out of bounds");
-        }
-    } else {
-        ctx.fillStyle = '#fff';
-        ctx.font = '32px Arial';
-        ctx.textAlign = 'center';
-        ctx.fillText('Hopukina ngā Whetū', canvas.width / 2, canvas.height / 2 - 80);
-        ctx.fillText('o Matariki', canvas.width / 2, canvas.height / 2 - 40);
-        ctx.font = '20px Arial';
-        ctx.fillText('Help Ruru catch the stars of Matariki', canvas.width / 2, canvas.height / 2);
-        ctx.fillText('and avoid the glowing spheres', canvas.width / 2, canvas.height / 2 + 30);
-        ctx.font = '24px Arial';
-        ctx.fillText('Press Space to Start', canvas.width / 2, canvas.height / 2 + 80);
-    }
-
-    // Display Current Star Name
-    if (currentStarName) {
-        ctx.fillStyle = '#fff';
-        ctx.font = '20px Arial';
-        ctx.textAlign = 'center';
-        ctx.fillText(currentStarName, canvas.width / 2, 100);
     }
 
     // Display Score
