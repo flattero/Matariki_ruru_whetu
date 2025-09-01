@@ -38,7 +38,7 @@ obstacleImg.src = 'glowing_ball.png';  // Make sure this image file exists in th
 
 // Load and reference Background Music
 const backgroundMusic = document.getElementById('backgroundMusic');
-backgroundMusic.volume = 0.02;
+backgroundMusic.volume = 0.01;
 
 // Load Star Sounds and Set Volume
 const starAudios = [
